@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { Link } from "react-router-dom"
 
 export const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -12,10 +13,24 @@ export const UserList = () => {
         const response = await axios.get("http://localhost:5000/users");
         setUsers(response.data);
     }
-    return (
-        <div className="container mx-auto mt-5">
 
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+    const deleteUser = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/users/${id}`);
+            getUsers();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <div className="container mx-auto mt-10">
+            <div className="container my-5">
+                <Link to={'add'} className="mb-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Add New User</Link>
+            </div>
+            <div className="relative  overflow-x-auto shadow-md sm:rounded-lg">
+
+
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -63,8 +78,8 @@ export const UserList = () => {
 
                                 <td className="flex justify-between px-6 py-4 text-right">
 
-                                    <button className="font-medium hover:opacity-75  text-white bg-green-500 px-3 py-2 rounded-md">Edit</button>
-                                    <button className="font-medium hover:opacity-75 text-white bg-pink-500 px-3 py-2 rounded-md">Delete</button>
+                                    <Link to={`edit/${user.id}`} className="font-medium hover:opacity-75  text-white bg-green-500 px-3 py-2 rounded-md">Edit</Link>
+                                    <button onClick={() => deleteUser(user.id)} className="font-medium hover:opacity-75 text-white bg-pink-500 px-3 py-2 rounded-md">Delete</button>
                                 </td>
                             </tr>
                         ))}

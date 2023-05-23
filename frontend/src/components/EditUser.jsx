@@ -1,18 +1,23 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 
-export const AddUser = () => {
+export const EditUser = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [gender, setGender] = useState("Male");
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
-    const saveUser = async (e) => {
+    useEffect(() => {
+        getUserById();
+    }, []);
+
+    const updateUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/users", {
+            await axios.patch(`http://localhost:5000/users/${id}`, {
                 name,
                 email,
                 gender
@@ -23,6 +28,13 @@ export const AddUser = () => {
         }
     }
 
+    const getUserById = async () => {
+        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        setName(response.data.name);
+        setEmail(response.data.email);
+        setGender(response.data.gender);
+    }
+
     return (
         <div className="container mt-10 px-10  mx-48">
             <div className="flex items-center  gap-3">
@@ -31,8 +43,7 @@ export const AddUser = () => {
 
             </div>
             <h1 className="font-bold text-lg text-slate-800 mb-3">Add User Form</h1>
-
-            <form onSubmit={saveUser}>
+            <form onSubmit={updateUser}>
                 <div className="mb-6">
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                     <input type="text" id="name" className="bg-gray-50 border
@@ -57,7 +68,9 @@ export const AddUser = () => {
                     </select>
                 </div>
 
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ">Add User</button>
+                <button type="submit" className="text-white bg-blue-700
+                 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm 
+                 w-full sm:w-auto px-5 py-2.5 text-center ">Update </button>
             </form>
 
 
