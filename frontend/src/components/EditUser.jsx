@@ -42,7 +42,7 @@ export const EditUser = () => {
                 <Link to={'/'} className="text-xs font-thin text-blue-500 border-b border-blue-500 hover:border-none">Back to</Link>
 
             </div>
-            <h1 className="font-bold text-lg text-slate-800 mb-3">Add User Form</h1>
+            <h1 className="font-bold text-lg text-slate-800 mb-3">Edit User Form</h1>
             <form onSubmit={updateUser}>
                 <div className="mb-6">
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
